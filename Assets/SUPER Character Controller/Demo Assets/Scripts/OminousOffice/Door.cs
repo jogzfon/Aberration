@@ -7,11 +7,27 @@ public class Door : MonoBehaviour, IInteractable
 {   
     public float openAngle = -105;
     public bool reverse, doorOpen = false;
+    public bool lockedDoor = false;
+
     public bool Interact(){
-        if(!doorOpen){
-            StartCoroutine(OpenDoor());
-            doorOpen = true;
-            return true;
+        if (lockedDoor)
+        {
+            //Play a locked Audio
+        }
+        else
+        {
+            if(!doorOpen){
+                reverse = false;
+                doorOpen = true;
+                StartCoroutine(OpenDoor());
+                return true;
+            }
+            else
+            {
+                reverse = true;
+                doorOpen = false;
+                StartCoroutine(OpenDoor());
+            }
         }
         return false;
     }
@@ -23,7 +39,7 @@ public class Door : MonoBehaviour, IInteractable
             alpha+= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        Destroy(this);
+        //Destroy(this);
         yield return null;
     }
 }
